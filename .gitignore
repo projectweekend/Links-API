@@ -52,3 +52,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# Sublime Project files
+*.sublime-project
+*.sublime-workspace
+
+# Vagrant files
+.vagrant
