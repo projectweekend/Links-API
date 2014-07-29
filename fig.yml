@@ -1,0 +1,14 @@
+db:
+    image: orchardup/postgresql
+web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:5000
+    volumes:
+        - ./links:/code/links
+    ports:
+        - 5000:5000
+    links:
+        - db
+    environment:
+        DEBUG: True
+        SECRET_KEY: NotTheReal$3cr3TKEY
