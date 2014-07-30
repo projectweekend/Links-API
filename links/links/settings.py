@@ -40,6 +40,8 @@ DEFAULT_APPS = (
 
 THIRD_PARTY_APPS = (
     'south',
+    'rest_framework',
+    'django_filters',
 )
 
 LOCAL_APPS = (
