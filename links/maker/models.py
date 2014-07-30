@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 
-class Maker(AbstractBaseUser, PermissionsMixin):
+class Maker(PermissionsMixin, AbstractBaseUser):
 
     identifier = models.CharField(max_length=200, unique=True)
     is_admin = models.BooleanField(default=False)
