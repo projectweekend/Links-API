@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+from maker.managers import MakerManager
 
 
 class Maker(PermissionsMixin, AbstractBaseUser):
@@ -13,6 +14,8 @@ class Maker(PermissionsMixin, AbstractBaseUser):
 
     USERNAME_FIELD = 'identifier'
     REQUIRED_FIELDS = ['first_name', 'last_name']
+
+    objects = MakerManager()
 
     def __unicode__(self):
         return self.identifier

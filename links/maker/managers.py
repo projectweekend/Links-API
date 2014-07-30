@@ -3,8 +3,8 @@ from django.contrib.auth.models import BaseUserManager
 
 class MakerManager(BaseUserManager):
 
-    def create_user(self, identifier, password, first_name,
-                    last_name, bio="", photo_url=""):
+    def create_user(self, identifier, password=None, first_name=None,
+                    last_name=None, bio="", photo_url=""):
 
         user = self.model(identifier=identifier,
                             first_name=first_name,
@@ -20,6 +20,7 @@ class MakerManager(BaseUserManager):
     def create_superuser(self, identifier, password):
 
         user = self.create_user(identifier=identifier,
+                                password=password,
                                 first_name="Super",
                                 last_name="User")
 
@@ -28,4 +29,3 @@ class MakerManager(BaseUserManager):
         user.save()
 
         return user
-
