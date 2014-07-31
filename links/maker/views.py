@@ -63,3 +63,8 @@ class AuthenticationView(generics.GenericAPIView):
             return Response(response.data, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class MakerView(generics.RetrieveUpdateAPIView):
+
+    pass
