@@ -41,6 +41,7 @@ DEFAULT_APPS = (
 THIRD_PARTY_APPS = (
     'south',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_filters',
 )
 
@@ -96,3 +97,26 @@ STATIC_URL = '/static/'
 
 
 AUTH_USER_MODEL = 'maker.Maker'
+
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_MODEL_SERIALIZER_CLASS':
+        'rest_framework.serializers.HyperlinkedModelSerializer',
+
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated'
+    ],
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework.filters.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ),
+
+    'PAGINATE_BY': 20,
+}
