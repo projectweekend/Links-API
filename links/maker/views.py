@@ -10,6 +10,7 @@ from maker.models import Maker
 from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer)
+from maker.mixins import AuthenticatedMaker
 
 
 class RegsitrationView(generics.GenericAPIView):
@@ -65,6 +66,6 @@ class AuthenticationView(generics.GenericAPIView):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-class MakerView(generics.RetrieveUpdateAPIView):
+class MakerSelfView(AuthenticatedMaker, generics.RetrieveUpdateAPIView):
 
     pass

@@ -35,16 +35,10 @@ class PasswordChangeSerializer(serializers.Serializer):
         return attrs
 
 
-class MakerReadSerializer(serializers.ModelSerializer):
+class MakerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Maker
         fields = ('identifier', 'first_name', 'last_name', 'email',
-                    'photo_url' 'bio')
-
-
-class MakerUpdateSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Maker
-        fields = ('first_name', 'last_name', 'email', 'photo_url', 'bio')
+                    'photo_url', 'bio')
+        read_only_fields = ('identifier',)
