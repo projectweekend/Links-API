@@ -23,6 +23,18 @@ class AuthenticationRequestSerializer(serializers.Serializer):
     password = serializers.CharField(required=True)
 
 
+class PasswordChangeSerializer(serializers.Serializer):
+
+    password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError("'new_password' and 'confirm_password' do not match")
+        return attrs
+
+
 class MakerReadSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -36,15 +48,3 @@ class MakerUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Maker
         fields = ('first_name', 'last_name', 'email', 'photo_url', 'bio')
-
-
-class MakerPasswordSerializer(serializers.Serializer):
-
-    password = serializers.CharField(required=True)
-    new_password = serializers.CharField(required=True)
-    confirm_password = serializers.CharField(required=True)
-
-    def validate(self, attrs):
-        if attrs['new_password'] != attrs['confirm_password']:
-            raise serializers.ValidationError("'new_password' and 'confirm_password' do not match")
-        return attrs
