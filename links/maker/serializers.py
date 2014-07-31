@@ -10,7 +10,12 @@ class RegistrationRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
 
-class RegistrationResponseSerializer(serializers.Serializer):
+class AuthenticationResponseSerializer(serializers.Serializer):
 
-    id = serializers.IntegerField()
     token = serializers.CharField()
+
+
+class AuthenticationRequestSerializer(serializers.Serializer):
+
+    identifier = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
