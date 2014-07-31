@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from maker.models import Maker
 
 
 class RegistrationRequestSerializer(serializers.Serializer):
