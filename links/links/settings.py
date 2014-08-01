@@ -41,12 +41,12 @@ DEFAULT_APPS = (
 THIRD_PARTY_APPS = (
     'south',
     'rest_framework',
-    'rest_framework.authtoken',
     'django_filters',
 )
 
 LOCAL_APPS = (
     'maker',
+    'rest_framework.authtoken',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
