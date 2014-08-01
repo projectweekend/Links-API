@@ -30,7 +30,7 @@ class RegsitrationView(generics.GenericAPIView):
                 password=serializer.data['password'],
                 first_name = serializer.data['first_name'],
                 last_name = serializer.data['last_name'],
-                email = serializer.data['email'])
+                email = serializer.data['email'].lower())
         except IntegrityError:
             content = {'message': 'This user is taken'}
             return Response(content, status=status.HTTP_409_CONFLICT)
