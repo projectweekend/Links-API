@@ -1,6 +1,9 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
-from maker.views import (RegsitrationView, AuthenticationView, MakerSelfView)
+from maker.views import (RegsitrationView,
+                            AuthenticationView,
+                            MakerSelfView,
+                            ChangePasswordView)
 
 
 urlpatterns = patterns(
@@ -16,5 +19,9 @@ urlpatterns = patterns(
     url(
         r'^authenticate/?$',
         AuthenticationView.as_view()
+    ),
+    url(
+        r'^password/?$',
+        ChangePasswordView.as_view()
     )
 )

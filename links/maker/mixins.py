@@ -11,3 +11,11 @@ class AuthenticatedMaker(object):
 
     def get_object(self):
         return self.get_queryset()
+
+
+class ChangePassword(object):
+
+    def change_password(self, new_password):
+        user = self.get_object()
+        user.set_password(new_password)
+        user.save()

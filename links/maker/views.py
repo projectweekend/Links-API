@@ -9,8 +9,9 @@ from rest_framework.authtoken.models import Token
 from maker.models import Maker
 from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
-                                AuthenticationResponseSerializer)
-from maker.mixins import AuthenticatedMaker
+                                AuthenticationResponseSerializer,
+                                ChangePasswordSerializer)
+from maker.mixins import AuthenticatedMaker, ChangePassword
 
 
 class RegsitrationView(generics.GenericAPIView):
@@ -64,6 +65,18 @@ class AuthenticationView(generics.GenericAPIView):
             return Response(response.data, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class ChangePasswordView(AuthenticatedMaker, ChangePassword, generics.GenericAPIView):
+
+    def post(self, request):
+        serializer = ChangePasswordSerializer(data=request.DATA)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        self.change_password(request.DATA['new_password'])
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class MakerSelfView(AuthenticatedMaker, generics.RetrieveUpdateAPIView):
