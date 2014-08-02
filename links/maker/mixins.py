@@ -1,5 +1,5 @@
-from maker.models import Maker
-from maker.serializers import MakerSerializer
+from maker.models import Maker, PasswordResetToken
+from maker.serializers import MakerSerializer, ResetPasswordRequestSerializer
 
 
 class AuthenticatedMaker(object):
@@ -19,3 +19,19 @@ class ChangePassword(object):
         user = self.get_object()
         user.set_password(new_password)
         user.save()
+
+
+class PasswordResetRequest(object):
+
+    serializer_class = ResetPasswordRequestSerializer
+
+    def find_user(self, email):
+        try:
+            return Maker.objects.get(email=email)
+        except Maker.DoesNotExist:
+            return None
+
+    def send_email(self, user):
+        token = ResetPasswordRequestSerializer.objects.create(maker=user)
+        # TODO: send message to queue for email to be sent
+        return token

@@ -6,12 +6,15 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
 
-from maker.models import Maker
+from maker.models import Maker, PasswordResetToken
 from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer,
+                                ResetPasswordRequestSerializer,
                                 ChangePasswordSerializer)
-from maker.mixins import AuthenticatedMaker, ChangePassword
+from maker.mixins import (AuthenticatedMaker,
+                            ChangePassword,
+                            PasswordResetRequest)
 
 
 class RegsitrationView(generics.GenericAPIView):
@@ -67,6 +70,23 @@ class AuthenticationView(generics.GenericAPIView):
             return Response(response.data, status=status.HTTP_200_OK)
 
         return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
+class ResetPasswordRequestView(PasswordResetRequest, generics.GenericAPIView):
+
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.DATA)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = self.find_user(request.DATA['email'])
+        if user:
+            self.send_email(user)
+
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class ChangePasswordView(AuthenticatedMaker, ChangePassword, generics.GenericAPIView):

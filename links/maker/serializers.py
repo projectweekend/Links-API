@@ -22,6 +22,11 @@ class AuthenticationRequestSerializer(serializers.Serializer):
     password = serializers.CharField(required=True)
 
 
+class ResetPasswordRequestSerializer(serializers.Serializer):
+
+    email = serializers.EmailField(required=True)
+
+
 class ChangePasswordSerializer(serializers.Serializer):
 
     new_password = serializers.CharField(required=True)
