@@ -14,11 +14,48 @@ class RegistrationTest(TestCase):
 
     def testSuccess(self):
         response = self.client.post(self.url, {
-            'identifier': 'something_cool',
-            'password': 'something secret',
             'email': 'test@test.com',
+            'password': 'something secret',
             'first_name': 'Testy',
             'last_name': 'McTesterson'
         }, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['identifier'], response.data['email'])
+
+    def testInvalidEmail(self):
+        response = self.client.post(self.url, {
+            'email': 'not an email',
+            'password': 'something secret',
+            'first_name': 'Testy',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testNoPassword(self):
+        response = self.client.post(self.url, {
+            'email': 'test@test.com',
+            'first_name': 'Testy',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testNoFirstName(self):
+        response = self.client.post(self.url, {
+            'email': 'test@test.com',
+            'password': 'something secret',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testNoLastName(self):
+        response = self.client.post(self.url, {
+            'email': 'test@test.com',
+            'password': 'something secret',
+            'first_name': 'Testy',
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
