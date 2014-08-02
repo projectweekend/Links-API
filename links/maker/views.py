@@ -25,14 +25,16 @@ class RegsitrationView(generics.GenericAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         try:
+            email = serializer.data['email'].lower()
+
             user = Maker.objects.create_user(
-                identifier=serializer.data['identifier'],
+                identifier=email,
                 password=serializer.data['password'],
                 first_name = serializer.data['first_name'],
                 last_name = serializer.data['last_name'],
-                email = serializer.data['email'].lower())
+                email = email)
         except IntegrityError:
-            content = {'message': 'This user is taken'}
+            content = {'message': 'This email is in use'}
             return Response(content, status=status.HTTP_409_CONFLICT)
 
         token = Token.objects.create(user=user)
