@@ -13,7 +13,7 @@ from maker.serializers import (RegistrationRequestSerializer,
                                 ChangePasswordSerializer)
 from maker.mixins import (AuthenticatedMaker,
                             ChangePassword,
-                            PasswordResetRequest)
+                            PasswordReset)
 
 
 class RegsitrationView(generics.GenericAPIView):
@@ -71,12 +71,12 @@ class AuthenticationView(generics.GenericAPIView):
         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 
-class ResetPasswordRequestView(PasswordResetRequest, generics.GenericAPIView):
+class ResetPasswordRequestView(PasswordReset, generics.GenericAPIView):
 
     permission_classes = (AllowAny,)
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.DATA)
+        serializer = self.request_serializer(data=request.DATA)
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

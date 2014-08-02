@@ -21,9 +21,9 @@ class ChangePassword(object):
         user.save()
 
 
-class PasswordResetRequest(object):
+class PasswordReset(object):
 
-    serializer_class = ResetPasswordRequestSerializer
+    request_serializer = ResetPasswordRequestSerializer
 
     def find_user(self, email):
         try:
