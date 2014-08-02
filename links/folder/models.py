@@ -1,3 +1,15 @@
 from django.db import models
 
-# Create your models here.
+
+class Folder(models.Model):
+
+    owner = models.ForeignKey('maker.Maker')
+    name = models.CharField(max_length=50)
+    is_public = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = 'Folder'
+        verbose_name_plural = 'Folders'
+
+    def __unicode__(self):
+        return "{0}".format(self.name)
