@@ -10,7 +10,6 @@ from maker.models import Maker, PasswordResetToken
 from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer,
-                                ResetPasswordRequestSerializer,
                                 ChangePasswordSerializer)
 from maker.mixins import (AuthenticatedMaker,
                             ChangePassword,
@@ -84,7 +83,7 @@ class ResetPasswordRequestView(PasswordResetRequest, generics.GenericAPIView):
 
         user = self.find_user(request.DATA['email'])
         if user:
-            self.send_email(user)
+            PasswordResetToken.objects.create_and_send(user)
 
         return Response(status=status.HTTP_201_CREATED)
 

@@ -1,3 +1,4 @@
+from django.db.models import Manager
 from django.contrib.auth.models import BaseUserManager
 
 
@@ -31,3 +32,11 @@ class MakerManager(BaseUserManager):
         user.save()
 
         return user
+
+
+class PasswordResetTokenManager(Manager):
+
+    def create_and_send(self, user):
+        token = self.model(maker=user)
+        token.save()
+        #TODO: pass message to email queue here
