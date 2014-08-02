@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 
+from maker.models import PasswordResetToken
+
 
 class RegistrationTest(TestCase):
 
@@ -58,3 +60,48 @@ class RegistrationTest(TestCase):
         }, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class PasswordResetRequestTest(TestCase):
+
+    url = reverse('password-reset')
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.post(reverse('registration'), {
+            'email': 'test@test.com',
+            'password': 'something secret',
+            'first_name': 'Testy',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+    def testSuccess(self):
+        response = self.client.post(self.url, {
+            'email': 'test@test.com'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        token = PasswordResetToken.objects.get(maker__email='test@test.com')
+        self.assertEqual(token.maker.email, 'test@test.com')
+
+    def testInvalidEmail(self):
+        response = self.client.post(self.url, {
+            'email': 'not an email'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testEmailDoesNotExist(self):
+        response = self.client.post(self.url, {
+            'email': 'test1@test.com'
+        }, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        try:
+            token = PasswordResetToken.objects.get(maker__email='test1@test.com')
+        except PasswordResetToken.DoesNotExist:
+            pass
+
+

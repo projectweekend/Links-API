@@ -1,4 +1,4 @@
-from maker.models import Maker, PasswordResetToken
+from maker.models import Maker
 from maker.serializers import MakerSerializer, ResetPasswordRequestSerializer
 
 
@@ -30,8 +30,3 @@ class PasswordResetRequest(object):
             return Maker.objects.get(email=email)
         except Maker.DoesNotExist:
             return None
-
-    def send_email(self, user):
-        token = ResetPasswordRequestSerializer.objects.create(maker=user)
-        # TODO: send message to queue for email to be sent
-        return token
