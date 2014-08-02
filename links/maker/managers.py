@@ -31,8 +31,3 @@ class MakerManager(BaseUserManager):
         user.save()
 
         return user
-
-
-class PasswordResetTokenManager(BaseUserManager):
-
-    pass

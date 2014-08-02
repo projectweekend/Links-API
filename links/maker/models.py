@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-from maker.managers import MakerManager, PasswordResetTokenManager
+from maker.managers import MakerManager
 
 
 def password_reset_token():
@@ -45,8 +45,6 @@ class PasswordResetToken(models.Model):
     maker = models.ForeignKey('Maker')
     token = models.CharField(max_length=50, default=password_reset_token)
     date = models.DateTimeField(auto_now_add=True)
-
-    objects = PasswordResetTokenManager()
 
     def __unicode__(self):
         return "PW Reset Token: {0}".format(self.maker.identifier)
