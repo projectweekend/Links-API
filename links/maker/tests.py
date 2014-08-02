@@ -21,7 +21,6 @@ class RegistrationTest(TestCase):
         }, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(response.data['identifier'], response.data['email'])
 
     def testInvalidEmail(self):
         response = self.client.post(self.url, {
