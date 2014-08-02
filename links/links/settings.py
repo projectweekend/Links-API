@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = (
 LOCAL_APPS = (
     'maker',
     'rest_framework.authtoken',
+    'folder',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
