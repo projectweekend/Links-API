@@ -18,5 +18,5 @@ class FolderExtendedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Folder
-        fields = ('id', 'name', 'description', 'is_public', 'created',)
+        fields = ('id', 'name', 'description', 'links', 'is_public', 'created',)
         read_only_fields = ('created',)
