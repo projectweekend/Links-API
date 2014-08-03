@@ -73,6 +73,7 @@ class PasswordResetToken(models.Model):
 class EmailChangeToken(models.Model):
 
     maker = models.ForeignKey('Maker')
+    new_email = models.EmailField()
     token = models.CharField(max_length=50, default=make_token)
     date = models.DateTimeField(auto_now_add=True)
 
