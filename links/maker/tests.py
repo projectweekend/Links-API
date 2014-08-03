@@ -62,6 +62,46 @@ class RegistrationTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
+class AuthenticationTest(TestCase):
+
+    url = reverse('authentication')
+
+    def setUp(self):
+        self.client = APIClient()
+        self.client.post(reverse('registration'), {
+            'email': 'test@test.com',
+            'password': 'something secret',
+            'first_name': 'Testy',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+    def testSuccess(self):
+        response = self.client.post(self.url, {
+            'identifier': 'test@test.com',
+            'password': 'something secret'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def testMissingIdentifier(self):
+        response = self.client.post(self.url, {
+            'password': 'something secret'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testMissingPassword(self):
+        response = self.client.post(self.url, {
+            'identifier': 'test@test.com'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testBadCredentials(self):
+        response = self.client.post(self.url, {
+            'identifier': 'test@test.com',
+            'password': 'not the password'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+
 class PasswordResetRequestTest(TestCase):
 
     url = reverse('password-reset')
