@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from rest_framework import generics
 
-# Create your views here.
+from link.mixins import LinkAPI, LinkSelfAPI
+
+
+class LinkSelfListView(LinkAPI,
+                        LinkSelfAPI,
+                        generics.ListCreateAPIView):
+    pass
+
+
+class LinkSelfDetailView(LinkAPI,
+                            LinkSelfAPI,
+                            generics.RetrieveUpdateDestroyAPIView):
+    pass
