@@ -135,3 +135,25 @@ class PasswordResetRequestTest(APITestCase):
             PasswordResetToken.objects.get(maker__email='test1@test.com')
         except PasswordResetToken.DoesNotExist:
             pass
+
+
+class MakerSelfTest(AuthenticatedAPITestCase):
+
+    url = reverse('maker-self')
+
+    def testSuccess(self):
+        # Read
+        response = self.client.get(self.url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['email'], 'test@test.com')
+        self.assertEqual(response.data['first_name'], 'Testy')
+        self.assertEqual(response.data['last_name'], 'McTesterson')
+
+        # Update
+        response = self.client.patch(self.url, {
+            'first_name': 'Dave',
+            'last_name': 'Johnson'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['first_name'], 'Dave')
+        self.assertEqual(response.data['last_name'], 'Johnson')
