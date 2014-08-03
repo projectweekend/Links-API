@@ -44,4 +44,4 @@ class MakerSerializer(serializers.ModelSerializer):
         model = Maker
         fields = ('identifier', 'first_name', 'last_name', 'email',
                     'photo_url', 'bio')
-        read_only_fields = ('identifier',)
+        read_only_fields = ('identifier', 'email',)
