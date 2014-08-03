@@ -172,5 +172,9 @@ class MakerSelfView(AuthenticatedMaker, generics.RetrieveUpdateAPIView):
     pass
 
 
-class MakerProfileView(MakerProfile, generics.RetrieveAPIView):
+class MakerProfileListView(MakerProfile, generics.ListAPIView):
+    pass
+
+
+class MakerProfileDetailView(MakerProfile, generics.RetrieveAPIView):
     pass
