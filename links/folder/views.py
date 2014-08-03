@@ -1,6 +1,13 @@
 from rest_framework import generics
 
+from folder.mixins import FolderAPI, FolderSelfAPI
 
-class FolderSelfView(generics.ListCreateAPIView):
 
+class FolderSelfListView(FolderAPI, FolderSelfAPI,
+                            generics.ListCreateAPIView):
+    pass
+
+
+class FolderSelfDetailView(FolderAPI, FolderSelfAPI,
+                            generics.RetrieveUpdateDestroyAPIView):
     pass
