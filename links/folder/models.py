@@ -11,6 +11,7 @@ class Folder(models.Model):
     class Meta:
         verbose_name = 'Folder'
         verbose_name_plural = 'Folders'
+        unique_together = ('owner', 'name',)
 
     def __unicode__(self):
         return "{0}".format(self.name)
