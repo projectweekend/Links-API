@@ -4,7 +4,7 @@ from django.db import models
 class Link(models.Model):
 
     owner = models.ForeignKey('maker.Maker')
-    folder = models.ForeignKey('folder.Folder', null=True)
+    folder = models.ForeignKey('folder.Folder', null=True, related_name='links')
     title = models.CharField(max_length=100)
     url = models.URLField()
     note = models.TextField(blank=True)
