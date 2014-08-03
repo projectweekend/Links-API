@@ -43,6 +43,11 @@ class EmailChangeRequestSerializer(serializers.Serializer):
     new_email = serializers.EmailField(required=True)
 
 
+class EmailChangeProcessSerializer(serializers.Serializer):
+
+    token = serializers.CharField(required=True)
+
+
 class MakerSerializer(serializers.ModelSerializer):
 
     class Meta:
