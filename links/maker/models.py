@@ -20,11 +20,11 @@ class Maker(PermissionsMixin, AbstractBaseUser):
     )
 
     identifier = models.CharField(max_length=200, unique=True)
+    email = models.EmailField()
     is_admin = models.BooleanField(default=False)
     photo_url = models.URLField(blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField()
     bio = models.TextField(blank=True)
     signup_type = models.CharField(max_length=2, choices=SIGNUP_TYPES,
                                     default=REGULAR)
