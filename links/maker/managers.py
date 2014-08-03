@@ -46,7 +46,7 @@ class PasswordResetTokenManager(Manager):
 
 class EmailChangeTokenManager(Manager):
 
-    def is_in_use(self, email):
+    def email_in_use(self, email):
         try:
             return Maker.objects.get(email=email)
         except Maker.DoesNotExist:
