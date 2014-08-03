@@ -1,7 +1,5 @@
-from rest_framework import generics, status
+from rest_framework import generics
 
-# def pre_save(self, obj):
-#        obj.user = self.request.user
 
 class FolderSelfView(generics.ListCreateAPIView):
 
