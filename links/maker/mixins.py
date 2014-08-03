@@ -2,6 +2,7 @@ from rest_framework.permissions import AllowAny
 
 from maker.models import Maker
 from maker.serializers import (MakerSerializer,
+                                MakerProfileSerializer,
                                 ResetPasswordRequestSerializer,
                                 ResetPasswordProcessSerializer)
 
@@ -15,6 +16,11 @@ class AuthenticatedMaker(object):
 
     def get_object(self):
         return self.get_queryset()
+
+
+class MakerProfile(object):
+
+    serializer_class = MakerProfileSerializer
 
 
 class ChangePassword(object):

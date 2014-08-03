@@ -16,6 +16,7 @@ from maker.serializers import (RegistrationRequestSerializer,
                                 EmailChangeRequestSerializer,
                                 EmailChangeProcessSerializer)
 from maker.mixins import (AuthenticatedMaker,
+                            MakerProfile,
                             ChangePassword,
                             PasswordReset)
 
@@ -168,5 +169,8 @@ class ChangePasswordView(AuthenticatedMaker, ChangePassword, generics.GenericAPI
 
 
 class MakerSelfView(AuthenticatedMaker, generics.RetrieveUpdateAPIView):
+    pass
 
+
+class MakerProfileView(MakerProfile, generics.RetrieveAPIView):
     pass

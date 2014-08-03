@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 from maker.views import (RegsitrationView,
                             AuthenticationView,
                             MakerSelfView,
+                            MakerProfileView,
                             ResetPasswordRequestView,
                             ResetPasswordProcessView,
                             ChangePasswordView,
@@ -52,4 +53,9 @@ urlpatterns = patterns(
         EmailChangeProcessView.as_view(),
         name='email-change-process'
     ),
+    url(
+        r'^(?P<pk>[0-9]+)/?$',
+        MakerProfileView.as_view(),
+        name='maker-profile-view'
+    )
 )
