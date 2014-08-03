@@ -7,7 +7,7 @@ from django.db import models
 from maker.managers import MakerManager, PasswordResetTokenManager
 
 
-def password_reset_token():
+def make_token():
     return str(uuid.uuid4())
 
 
@@ -57,13 +57,27 @@ class Maker(PermissionsMixin, AbstractBaseUser):
 class PasswordResetToken(models.Model):
 
     maker = models.ForeignKey('Maker')
-    token = models.CharField(max_length=50, default=password_reset_token)
+    token = models.CharField(max_length=50, default=make_token)
     date = models.DateTimeField(auto_now_add=True)
 
     objects = PasswordResetTokenManager()
 
     def __unicode__(self):
-        return "PW Reset Token: {0}".format(self.maker.identifier)
+        return self.maker.identifier
+
+    @property
+    def is_valid(self):
+        self.date < datetime.now()
+
+
+class EmailChangeToken(models.Model):
+
+    maker = models.ForeignKey('Maker')
+    token = models.CharField(max_length=50, default=make_token)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.maker.identifier
 
     @property
     def is_valid(self):
