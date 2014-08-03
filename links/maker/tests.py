@@ -137,6 +137,29 @@ class PasswordResetRequestTest(APITestCase):
             pass
 
 
+class EmailChangeRequestTest(AuthenticatedAPITestCase):
+
+    url = reverse('change-email')
+
+    def testSuccess(self):
+        response = self.client.post(self.url, {
+            'new_email': 'new@email.com'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def testInvalidEmail(self):
+        response = self.client.post(self.url, {
+            'new_email': 'not an email'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testEmailInUse(self):
+        response = self.client.post(self.url, {
+            'new_email': 'test@test.com'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+
+
 class MakerSelfTest(AuthenticatedAPITestCase):
 
     url = reverse('maker-self')
