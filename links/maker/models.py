@@ -39,6 +39,11 @@ class Maker(PermissionsMixin, AbstractBaseUser):
     def get_full_name(self):
         return "{0} {1}".format(self.first_name, self.last_name)
 
+    def change_email(self, new_email):
+        self.email = new_email
+        self.identifier = new_email
+        self.save()
+
 
 class PasswordResetToken(models.Model):
 
