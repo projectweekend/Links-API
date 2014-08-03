@@ -22,6 +22,7 @@ class Maker(PermissionsMixin, AbstractBaseUser):
     identifier = models.CharField(max_length=200, unique=True)
     email = models.EmailField()
     is_admin = models.BooleanField(default=False)
+    joined = models.DateTimeField(auto_now_add=True)
     photo_url = models.URLField(blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
