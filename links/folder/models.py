@@ -15,4 +15,4 @@ class Folder(models.Model):
         unique_together = ('owner', 'name',)
 
     def __unicode__(self):
-        return "{0}".format(self.name)
+        return "{0} by {1}".format(self.name, self.owner.identifier)
