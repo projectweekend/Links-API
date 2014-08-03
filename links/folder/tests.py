@@ -35,7 +35,6 @@ class FolderSelfTest(TestCase):
         # Detail
         response = self.client.get(detail_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['id'], 1)
         self.assertEqual(response.data['name'], 'Test Folder')
 
         # Update name
@@ -62,4 +61,23 @@ class FolderSelfTest(TestCase):
         # Delete
         response = self.client.delete(detail_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def testInvalidName(self):
+        response = self.client.post(reverse('folder-self-list'), {
+            'description': 'This is the description'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testDuplicateName(self):
+        self.client.post(reverse('folder-self-list'), {
+            'name': 'Test Folder',
+            'description': 'This is the description'
+        }, format='json')
+
+        response = self.client.post(reverse('folder-self-list'), {
+            'name': 'Test Folder'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+
+
 
