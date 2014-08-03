@@ -4,7 +4,9 @@ from datetime import datetime
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 
-from maker.managers import MakerManager, PasswordResetTokenManager
+from maker.managers import (MakerManager,
+                            PasswordResetTokenManager,
+                            EmailChangeTokenManager)
 
 
 def make_token():
@@ -76,6 +78,8 @@ class EmailChangeToken(models.Model):
     new_email = models.EmailField()
     token = models.CharField(max_length=50, default=make_token)
     date = models.DateTimeField(auto_now_add=True)
+
+    objects = EmailChangeTokenManager()
 
     def __unicode__(self):
         return self.maker.identifier
