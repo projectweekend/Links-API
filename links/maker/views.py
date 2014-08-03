@@ -13,7 +13,8 @@ from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer,
                                 ChangePasswordSerializer,
-                                EmailChangeRequestSerializer)
+                                EmailChangeRequestSerializer,
+                                EmailChangeProcessSerializer)
 from maker.mixins import (AuthenticatedMaker,
                             ChangePassword,
                             PasswordReset)
@@ -111,6 +112,28 @@ class EmailChangeRequestView(AuthenticatedMaker, generics.GenericAPIView):
         else:
             content = {'message': 'This email is in use'}
             return Response(content, status=status.HTTP_409_CONFLICT)
+
+
+class EmailChangeProcessView(AuthenticatedMaker, generics.GenericAPIView):
+
+    def post(self, request):
+        if self.request.user.signup_type != 'RG':
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        serializer = EmailChangeProcessSerializer(data=request.DATA)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            change_request = EmailChangeToken.objects.get(token=request.DATA['token'])
+        except EmailChangeToken.DoesNotExist:
+            return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+        if not change_request.is_valid:
+            return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+        self.request.user.change_email(change_request.new_email)
+        return Response(status=status.HTTP_200_OK)
 
 
 class ChangePasswordView(AuthenticatedMaker, ChangePassword, generics.GenericAPIView):

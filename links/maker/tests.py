@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 
 from rest_framework import status
 
-from maker.models import PasswordResetToken
+from maker.models import PasswordResetToken, EmailChangeToken, Maker
 from utils.testing_helpers import APITestCase, AuthenticatedAPITestCase
 
 
@@ -139,7 +139,7 @@ class PasswordResetRequestTest(APITestCase):
 
 class EmailChangeRequestTest(AuthenticatedAPITestCase):
 
-    url = reverse('change-email')
+    url = reverse('email-change-request')
 
     def testSuccess(self):
         response = self.client.post(self.url, {
@@ -158,6 +158,35 @@ class EmailChangeRequestTest(AuthenticatedAPITestCase):
             'new_email': 'test@test.com'
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
+
+
+class EmailChangeProcessTest(AuthenticatedAPITestCase):
+
+    url = reverse('email-change-process')
+
+    def testSuccess(self):
+        self.client.post(reverse('email-change-request'), {
+            'new_email': 'new@email.com'
+        }, format='json')
+        change_request = EmailChangeToken.objects.all()[0]
+
+        response = self.client.post(self.url, {
+            'token': change_request.token
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        Maker.objects.get(email='new@email.com')
+        Maker.objects.get(identifier='new@email.com')
+
+    def testMissingToken(self):
+        response = self.client.post(self.url, {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testInvalidToken(self):
+        response = self.client.post(self.url, {
+            'token': "not a valid token"
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_412_PRECONDITION_FAILED)
 
 
 class MakerSelfTest(AuthenticatedAPITestCase):

@@ -45,6 +45,6 @@ class PasswordResetTokenManager(Manager):
 class EmailChangeTokenManager(Manager):
 
     def create_and_send(self, user, new_email):
-        token = self.model(maker=user)
+        token = self.model(maker=user, new_email=new_email)
         token.save()
         #TODO: pass message to email queue here
