@@ -1,15 +1,19 @@
 from folder.models import Folder
-from folder.serializers import FolderSerializer
+from folder.serializers import FolderSerializer, FolderExtendedSerializer
 
 
 class FolderAPI(object):
 
-    serializer_class = FolderSerializer
     filter_fields = ('is_public',)
     ordering_fields = ('name', 'is_public',)
 
     def get_queryset(self):
         return Folder.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return FolderExtendedSerializer
+        return FolderSerializer
 
 
 class FolderSelfAPI(object):
