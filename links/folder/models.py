@@ -7,6 +7,7 @@ class Folder(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     is_public = models.BooleanField(default=True)
+    created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         verbose_name = 'Folder'
