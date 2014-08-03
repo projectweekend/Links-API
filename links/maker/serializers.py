@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from maker.models import Maker
+from folder.serializers import FolderExtendedSerializer
 
 
 class RegistrationRequestSerializer(serializers.Serializer):
@@ -67,3 +68,18 @@ class MakerSerializer(serializers.ModelSerializer):
         fields = ('identifier', 'first_name', 'last_name', 'email',
                     'photo_url', 'bio', 'joined')
         read_only_fields = ('identifier', 'email', 'joined',)
+
+
+class MakerProfileSerializer(serializers.ModelSerializer):
+
+    folders = serializers.SerializerMethodField('public_folders')
+
+    class Meta:
+        model = Maker
+        fields = ('identifier', 'first_name', 'last_name', 'email',
+                    'photo_url', 'folders', 'bio', 'joined')
+
+    def public_folders(self, obj):
+        query_set = obj.folders.filter(is_public=True)
+        serializer = FolderExtendedSerializer(instance=query_set, many=True)
+        return serializer.data

@@ -3,7 +3,7 @@ from django.db import models
 
 class Folder(models.Model):
 
-    owner = models.ForeignKey('maker.Maker')
+    owner = models.ForeignKey('maker.Maker', related_name='folders')
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     is_public = models.BooleanField(default=True)
