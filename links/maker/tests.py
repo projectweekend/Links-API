@@ -157,3 +157,10 @@ class MakerSelfTest(AuthenticatedAPITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['first_name'], 'Dave')
         self.assertEqual(response.data['last_name'], 'Johnson')
+
+        # Read
+        response = self.client.get(self.url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['email'], 'test@test.com')
+        self.assertEqual(response.data['first_name'], 'Dave')
+        self.assertEqual(response.data['last_name'], 'Johnson')
