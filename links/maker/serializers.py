@@ -65,7 +65,7 @@ class MakerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Maker
-        fields = ('identifier', 'first_name', 'last_name', 'email',
+        fields = ('id', 'identifier', 'first_name', 'last_name', 'email',
                     'photo_url', 'bio', 'joined')
         read_only_fields = ('identifier', 'email', 'joined',)
 
@@ -76,7 +76,7 @@ class MakerProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Maker
-        fields = ('identifier', 'first_name', 'last_name', 'email',
+        fields = ('id', 'identifier', 'first_name', 'last_name', 'email',
                     'photo_url', 'folders', 'bio', 'joined')
 
     def public_folders(self, obj):
