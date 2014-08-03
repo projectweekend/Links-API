@@ -13,6 +13,12 @@ def password_reset_token():
 
 class Maker(PermissionsMixin, AbstractBaseUser):
 
+    REGULAR = 'RG'
+
+    SIGNUP_TYPES = (
+        (REGULAR, 'Regular'),
+    )
+
     identifier = models.CharField(max_length=200, unique=True)
     is_admin = models.BooleanField(default=False)
     photo_url = models.URLField(blank=True)
@@ -20,6 +26,8 @@ class Maker(PermissionsMixin, AbstractBaseUser):
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
     bio = models.TextField(blank=True)
+    signup_type = models.CharField(max_length=2, choices=SIGNUP_TYPES,
+                                    default=REGULAR)
 
     USERNAME_FIELD = 'identifier'
     REQUIRED_FIELDS = ['first_name', 'last_name']
