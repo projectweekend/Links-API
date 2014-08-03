@@ -137,6 +137,69 @@ class PasswordResetRequestTest(APITestCase):
             pass
 
 
+class PasswordResetProcessTest(APITestCase):
+
+    url = reverse('password-reset-process')
+
+    def testSuccess(self):
+        self.client.post(reverse('registration'), {
+            'email': 'test@test.com',
+            'password': 'something secret',
+            'first_name': 'Testy',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+        self.client.post(reverse('password-reset'), {
+            'email': 'test@test.com'
+        }, format='json')
+
+        reset_request = PasswordResetToken.objects.all()[0]
+
+        response = self.client.post(self.url, {
+            'token': reset_request.token,
+            'new_password': '123456',
+            'confirm_password': '123456'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def testMissingToken(self):
+        response = self.client.post(self.url, {
+            'new_password': '123456',
+            'confirm_password': '123456'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testMissingNewPassword(self):
+        response = self.client.post(self.url, {
+            'token': 'dummy token',
+            'confirm_password': '123456'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testMissingConfirmPassword(self):
+        response = self.client.post(self.url, {
+            'token': 'dummy token',
+            'new_password': '123456',
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testPasswordsNotMatching(self):
+        response = self.client.post(self.url, {
+            'token': 'dummy token',
+            'new_password': 'adsfadsf',
+            'confirm_password': '123456'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testInvalidToken(self):
+        response = self.client.post(self.url, {
+            'token': 'invalid token',
+            'new_password': '123456',
+            'confirm_password': '123456'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_412_PRECONDITION_FAILED)
+
+
 class EmailChangeRequestTest(AuthenticatedAPITestCase):
 
     url = reverse('email-change-request')

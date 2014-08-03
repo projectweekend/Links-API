@@ -27,6 +27,18 @@ class ResetPasswordRequestSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
 
 
+class ResetPasswordProcessSerializer(serializers.Serializer):
+
+    token = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError("'new_password' and 'confirm_password' do not match")
+        return attrs
+
+
 class ChangePasswordSerializer(serializers.Serializer):
 
     new_password = serializers.CharField(required=True)

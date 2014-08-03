@@ -1,5 +1,9 @@
+from rest_framework.permissions import AllowAny
+
 from maker.models import Maker
-from maker.serializers import MakerSerializer, ResetPasswordRequestSerializer
+from maker.serializers import (MakerSerializer,
+                                ResetPasswordRequestSerializer,
+                                ResetPasswordProcessSerializer)
 
 
 class AuthenticatedMaker(object):
@@ -23,7 +27,9 @@ class ChangePassword(object):
 
 class PasswordReset(object):
 
+    permission_classes = (AllowAny,)
     request_serializer = ResetPasswordRequestSerializer
+    process_serializer = ResetPasswordProcessSerializer
 
     def find_user(self, email):
         try:

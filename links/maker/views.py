@@ -77,8 +77,6 @@ class AuthenticationView(generics.GenericAPIView):
 
 class ResetPasswordRequestView(PasswordReset, generics.GenericAPIView):
 
-    permission_classes = (AllowAny,)
-
     def post(self, request):
         serializer = self.request_serializer(data=request.DATA)
 
@@ -90,6 +88,27 @@ class ResetPasswordRequestView(PasswordReset, generics.GenericAPIView):
             PasswordResetToken.objects.create_and_send(user)
 
         return Response(status=status.HTTP_201_CREATED)
+
+
+class ResetPasswordProcessView(PasswordReset, generics.GenericAPIView):
+
+    def post(self, request):
+        serializer = self.process_serializer(data=request.DATA)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            reset_request = PasswordResetToken.objects.get(token=request.DATA['token'])
+        except PasswordResetToken.DoesNotExist:
+            return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+        if not reset_request.is_valid:
+            return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+        reset_request.maker.set_password(request.DATA['new_password'])
+        reset_request.maker.save()
+        return Response(status=status.HTTP_200_OK)
 
 
 class EmailChangeRequestView(AuthenticatedMaker, generics.GenericAPIView):
