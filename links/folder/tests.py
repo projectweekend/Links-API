@@ -1,22 +1,11 @@
-from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from rest_framework.test import APIClient
 from rest_framework import status
 
+from utils.testing_helpers import AuthenticatedAPITestCase
 
-class FolderSelfTest(TestCase):
 
-    def setUp(self):
-        self.client = APIClient()
-        response = self.client.post(reverse('registration'), {
-            'email': 'test@test.com',
-            'password': 'something secret',
-            'first_name': 'Testy',
-            'last_name': 'McTesterson'
-        }, format='json')
-        token = response.data['token']
-        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
+class FolderSelfTest(AuthenticatedAPITestCase):
 
     def testSuccess(self):
         # Create
