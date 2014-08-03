@@ -1,18 +1,14 @@
-from django.test import TestCase
 from django.core.urlresolvers import reverse
 
-from rest_framework.test import APIClient
 from rest_framework import status
 
 from maker.models import PasswordResetToken
+from utils.testing_helpers import APITestCase, AuthenticatedAPITestCase
 
 
-class RegistrationTest(TestCase):
+class RegistrationTest(APITestCase):
 
     url = reverse('registration')
-
-    def setUp(self):
-        self.client = APIClient()
 
     def testSuccess(self):
         response = self.client.post(self.url, {
@@ -62,12 +58,11 @@ class RegistrationTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-class AuthenticationTest(TestCase):
+class AuthenticationTest(APITestCase):
 
     url = reverse('authentication')
 
-    def setUp(self):
-        self.client = APIClient()
+    def testSuccess(self):
         self.client.post(reverse('registration'), {
             'email': 'test@test.com',
             'password': 'something secret',
@@ -75,7 +70,6 @@ class AuthenticationTest(TestCase):
             'last_name': 'McTesterson'
         }, format='json')
 
-    def testSuccess(self):
         response = self.client.post(self.url, {
             'identifier': 'test@test.com',
             'password': 'something secret'
@@ -102,12 +96,11 @@ class AuthenticationTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PasswordResetRequestTest(TestCase):
+class PasswordResetRequestTest(APITestCase):
 
     url = reverse('password-reset')
 
-    def setUp(self):
-        self.client = APIClient()
+    def testSuccess(self):
         self.client.post(reverse('registration'), {
             'email': 'test@test.com',
             'password': 'something secret',
@@ -115,7 +108,6 @@ class PasswordResetRequestTest(TestCase):
             'last_name': 'McTesterson'
         }, format='json')
 
-    def testSuccess(self):
         response = self.client.post(self.url, {
             'email': 'test@test.com'
         }, format='json')
@@ -140,8 +132,6 @@ class PasswordResetRequestTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         try:
-            token = PasswordResetToken.objects.get(maker__email='test1@test.com')
+            PasswordResetToken.objects.get(maker__email='test1@test.com')
         except PasswordResetToken.DoesNotExist:
             pass
-
-
