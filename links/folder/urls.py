@@ -12,7 +12,7 @@ urlpatterns = patterns(
         name='folder-self-list'
     ),
     url(
-        r'^/(?P<pk>[0-9]+)/?$',
+        r'^(?P<pk>[0-9]+)/?$',
         FolderSelfDetailView.as_view(),
         name='folder-self-detail'
     )
