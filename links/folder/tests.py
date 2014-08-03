@@ -14,7 +14,15 @@ class FolderSelfTest(AuthenticatedAPITestCase):
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
-        detail_url = reverse('folder-self-detail', args=(response.data['id'],))
+        folder = response.data['id']
+        detail_url = reverse('folder-self-detail', args=(folder,))
+
+        # Add link to folder
+        response = self.client.post(reverse('link-self-list'), {
+            'url': 'https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c',
+            'note': 'Raspberry Pi GPIO setup tutorial',
+            'folder': folder
+        }, format='json')
 
         # List
         response = self.client.get(reverse('folder-self-list'), format='json')
@@ -25,6 +33,7 @@ class FolderSelfTest(AuthenticatedAPITestCase):
         response = self.client.get(detail_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['name'], 'Test Folder')
+        self.assertEqual(len(response.data['links']), 1)
 
         # Update name
         response = self.client.patch(detail_url, {
