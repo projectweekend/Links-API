@@ -62,7 +62,7 @@ class FolderSelfTest(TestCase):
         response = self.client.delete(detail_url, format='json')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    def testInvalidName(self):
+    def testMissingName(self):
         response = self.client.post(reverse('folder-self-list'), {
             'description': 'This is the description'
         }, format='json')
@@ -78,6 +78,3 @@ class FolderSelfTest(TestCase):
             'name': 'Test Folder'
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_409_CONFLICT)
-
-
-
