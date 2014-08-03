@@ -70,7 +70,7 @@ class PasswordResetToken(models.Model):
 
     @property
     def is_valid(self):
-        self.date < timezone.now()
+        return self.date < timezone.now()
 
 
 class EmailChangeToken(models.Model):
@@ -87,4 +87,4 @@ class EmailChangeToken(models.Model):
 
     @property
     def is_valid(self):
-        self.date < timezone.now()
+        return self.date < timezone.now()
