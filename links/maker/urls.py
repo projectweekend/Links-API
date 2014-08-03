@@ -14,7 +14,7 @@ from maker.views import (RegsitrationView,
 urlpatterns = patterns(
     '',
     url(
-        r'^/?$',
+        r'^self/?$',
         MakerSelfView.as_view(),
         name='maker-self'
     ),
