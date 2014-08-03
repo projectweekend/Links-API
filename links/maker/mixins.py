@@ -22,6 +22,9 @@ class MakerProfile(object):
 
     serializer_class = MakerProfileSerializer
 
+    def get_queryset(self):
+        return Maker.objects.all()
+
 
 class ChangePassword(object):
 
