@@ -8,6 +8,7 @@ class Link(models.Model):
     title = models.CharField(max_length=100)
     url = models.URLField()
     note = models.TextField(blank=True)
+    photo_url = models.URLField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
