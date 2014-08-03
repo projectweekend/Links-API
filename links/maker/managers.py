@@ -1,8 +1,6 @@
 from django.db.models import Manager
 from django.contrib.auth.models import BaseUserManager
 
-from maker.models import Maker
-
 
 class MakerManager(BaseUserManager):
 
