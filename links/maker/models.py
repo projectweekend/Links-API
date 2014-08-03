@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
+from django.utils import timezone
 
 from maker.managers import (MakerManager,
                             PasswordResetTokenManager,
@@ -69,7 +70,7 @@ class PasswordResetToken(models.Model):
 
     @property
     def is_valid(self):
-        self.date < datetime.now()
+        self.date < timezone.now()
 
 
 class EmailChangeToken(models.Model):
@@ -86,4 +87,4 @@ class EmailChangeToken(models.Model):
 
     @property
     def is_valid(self):
-        self.date < datetime.now()
+        self.date < timezone.now()
