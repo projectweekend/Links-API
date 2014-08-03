@@ -4,7 +4,8 @@ from maker.views import (RegsitrationView,
                             AuthenticationView,
                             MakerSelfView,
                             ResetPasswordRequestView,
-                            ChangePasswordView)
+                            ChangePasswordView,
+                            EmailChangeRequestView)
 
 
 urlpatterns = patterns(
@@ -33,5 +34,10 @@ urlpatterns = patterns(
         r'^password/reset/?$',
         ResetPasswordRequestView.as_view(),
         name='password-reset'
-    )
+    ),
+    url(
+        r'^email/?$',
+        EmailChangeRequestView.as_view(),
+        name='change-email'
+    ),
 )

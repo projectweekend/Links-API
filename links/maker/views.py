@@ -6,11 +6,14 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
 
-from maker.models import Maker, PasswordResetToken
+from maker.models import (Maker,
+                            PasswordResetToken,
+                            EmailChangeToken)
 from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer,
-                                ChangePasswordSerializer)
+                                ChangePasswordSerializer,
+                                EmailChangeRequestSerializer)
 from maker.mixins import (AuthenticatedMaker,
                             ChangePassword,
                             PasswordReset)
@@ -86,6 +89,28 @@ class ResetPasswordRequestView(PasswordReset, generics.GenericAPIView):
             PasswordResetToken.objects.create_and_send(user)
 
         return Response(status=status.HTTP_201_CREATED)
+
+
+class EmailChangeRequestView(AuthenticatedMaker, generics.GenericAPIView):
+
+    def post(self, request):
+        if self.request.user.signup_type != 'RG':
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        serializer = EmailChangeRequestSerializer(data=request.DATA)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        new_email = request.DATA['new_email']
+
+        try:
+            Maker.objects.get(email=new_email)
+        except Maker.DoesNotExist:
+            EmailChangeToken.objects.create_and_send(self.request.user, new_email)
+            return Response(status=status.HTTP_201_CREATED)
+        else:
+            content = {'message': 'This email is in use'}
+            return Response(content, status=status.HTTP_409_CONFLICT)
 
 
 class ChangePasswordView(AuthenticatedMaker, ChangePassword, generics.GenericAPIView):

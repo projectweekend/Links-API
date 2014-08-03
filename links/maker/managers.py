@@ -46,12 +46,6 @@ class PasswordResetTokenManager(Manager):
 
 class EmailChangeTokenManager(Manager):
 
-    def email_in_use(self, email):
-        try:
-            return Maker.objects.get(email=email)
-        except Maker.DoesNotExist:
-            return None
-
     def create_and_send(self, user, new_email):
         token = self.model(maker=user)
         token.save()
