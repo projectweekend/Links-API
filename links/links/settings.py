@@ -49,6 +49,7 @@ LOCAL_APPS = (
     'rest_framework.authtoken',
     'folder',
     'link',
+    'issues',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
