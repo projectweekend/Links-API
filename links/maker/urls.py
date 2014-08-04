@@ -57,11 +57,11 @@ urlpatterns = patterns(
     url(
         r'^/?$',
         MakerProfileListView.as_view(),
-        name='maker-list-view'
+        name='maker-profile-list-view'
     ),
     url(
         r'^(?P<pk>[0-9]+)/?$',
         MakerProfileDetailView.as_view(),
-        name='maker-profile-view'
+        name='maker-profile-detail-view'
     )
 )

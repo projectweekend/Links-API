@@ -279,3 +279,39 @@ class MakerSelfTest(AuthenticatedAPITestCase):
         self.assertEqual(response.data['email'], 'test@test.com')
         self.assertEqual(response.data['first_name'], 'Dave')
         self.assertEqual(response.data['last_name'], 'Johnson')
+
+
+class MakerProfileTest(AuthenticatedAPITestCase):
+
+    def testSuccess(self):
+        # Add folder
+        response = self.client.post(reverse('folder-self-list'), {
+            'name': 'Test Folder',
+            'description': 'A folder for testing'
+        }, format='json')
+
+        folder = response.data['id']
+
+        # Add a link
+        self.client.post(reverse('link-self-list'), {
+            'url': 'http://www.google.com',
+            'note': 'This is Google',
+            'folder': folder
+        }, format='json')
+
+        # List
+        response = self.client.get(reverse('maker-profile-list-view'), format='json')
+        results = response.data['results']
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['count'], 1)
+        self.assertEqual(results[0]['email'], 'test@test.com')
+        self.assertEqual(len(results[0]['folders']), 1)
+        self.assertEqual(len(results[0]['folders'][0]['links']), 1)
+
+        # Detail
+        detail_url = reverse('maker-profile-detail-view', args=(results[0]['id'],))
+        response = self.client.get(detail_url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['email'], 'test@test.com')
+        self.assertEqual(len(response.data['folders']), 1)
+        self.assertEqual(len(response.data['folders'][0]['links']), 1)
