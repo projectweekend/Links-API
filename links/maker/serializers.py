@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from maker.models import Maker
 from folder.serializers import FolderExtendedSerializer
+from link.serializers import LinkSerializer
 
 
 class RegistrationRequestSerializer(serializers.Serializer):
@@ -73,13 +74,19 @@ class MakerSerializer(serializers.ModelSerializer):
 class MakerProfileSerializer(serializers.ModelSerializer):
 
     folders = serializers.SerializerMethodField('public_folders')
+    links = serializers.SerializerMethodField('uncategorized_links')
 
     class Meta:
         model = Maker
         fields = ('id', 'identifier', 'first_name', 'last_name', 'email',
-                    'photo_url', 'folders', 'bio', 'joined')
+                    'photo_url', 'folders', 'links', 'bio', 'joined')
 
     def public_folders(self, obj):
         query_set = obj.folders.filter(is_public=True)
         serializer = FolderExtendedSerializer(instance=query_set, many=True)
+        return serializer.data
+
+    def uncategorized_links(self, obj):
+        query_set = obj.links.filter(folder=None)
+        serializer = LinkSerializer(instance=query_set, many=True)
         return serializer.data
