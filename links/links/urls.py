@@ -10,4 +10,5 @@ urlpatterns = patterns(
     url(r'^v1/maker/', include('maker.urls')),
     url(r'^v1/folder/', include('folder.urls')),
     url(r'^v1/link/', include('link.urls')),
+    url(r'^v1/issue/', include('issues.urls')),
 )
