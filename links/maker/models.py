@@ -26,6 +26,7 @@ class Maker(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField()
     is_admin = models.BooleanField(default=False)
     joined = models.DateTimeField(auto_now_add=True)
+    verified = models.BooleanField(default=False)
     photo_url = models.URLField(blank=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -55,6 +56,20 @@ class Maker(PermissionsMixin, AbstractBaseUser):
         self.email = new_email
         self.identifier = new_email
         self.save()
+
+
+class EmailVerificationToken(models.Model):
+
+    maker = models.ForeignKey('Maker')
+    token = models.CharField(max_length=50, default=make_token)
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Email Verification Token'
+        verbose_name_plural = 'Email Verification Tokens'
+
+    def __unicode__(self):
+        return self.maker.identifier
 
 
 class PasswordResetToken(models.Model):
