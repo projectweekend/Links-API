@@ -46,12 +46,16 @@ class ReportedIssuesTest(APITestCase):
 
     def testReportLinkSuccess(self):
         response = self.client.post(reverse('report-link-view'), {
-            'link': self.link_id
+            'link': self.link_id,
+            'category': 'OFF',
+            'note': 'This is a note'
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def testReportUserSuccess(self):
         response = self.client.post(reverse('report-user-view'), {
-            'user': self.user_id
+            'user': self.user_id,
+            'category': 'NAP',
+            'note': 'This is a note'
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
