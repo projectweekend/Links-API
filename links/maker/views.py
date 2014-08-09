@@ -11,6 +11,7 @@ from maker.models import (Maker,
                             EmailChangeToken,
                             EmailVerificationToken)
 from maker.serializers import (RegistrationRequestSerializer,
+                                EmailVerificationProcessSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer,
                                 ChangePasswordSerializer,
@@ -52,6 +53,27 @@ class RegsitrationView(generics.GenericAPIView):
         response.data['token'] = auth_token.key
 
         return Response(response.data, status=status.HTTP_201_CREATED)
+
+
+class EmailVerificationProcessView(generics.GenericAPIView):
+
+    permission_classes = (AllowAny,)
+
+    def post(self, request):
+        serializer = EmailVerificationProcessSerializer(data=request.DATA)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            email_verification = EmailVerificationToken.objects.get(token=request.DATA['token'])
+        except EmailVerificationToken.DoesNotExist:
+            return Response(status=status.HTTP_412_PRECONDITION_FAILED)
+
+        email_verification.maker.verify_email()
+        email_verification.delete()
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class AuthenticationView(generics.GenericAPIView):
