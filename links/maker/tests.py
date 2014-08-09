@@ -2,7 +2,10 @@ from django.core.urlresolvers import reverse
 
 from rest_framework import status
 
-from maker.models import PasswordResetToken, EmailChangeToken, Maker
+from maker.models import (PasswordResetToken,
+                            EmailVerificationToken,
+                            EmailChangeToken,
+                            Maker)
 from utils.testing_helpers import APITestCase, AuthenticatedAPITestCase
 
 
@@ -56,6 +59,38 @@ class RegistrationTest(APITestCase):
         }, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class EmailVerificationProcessTest(APITestCase):
+
+    def testSuccess(self):
+        response = self.client.post(reverse('registration'), {
+            'email': 'test@test.com',
+            'password': 'something secret',
+            'first_name': 'Testy',
+            'last_name': 'McTesterson'
+        }, format='json')
+
+        maker = Maker.objects.get(email='test@test.com')
+        email_verification = EmailVerificationToken.objects.get(maker=maker)
+
+        response = self.client.post(reverse('email-verification-process'), {
+            'token': email_verification.token
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        maker = Maker.objects.get(email='test@test.com')
+        self.assertEqual(maker.verified, True)
+
+    def testMissingToken(self):
+        response = self.client.post(reverse('email-verification-process'), {}, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def testInvalidToken(self):
+        response = self.client.post(reverse('email-verification-process'), {
+            'token': 'not valid'
+        }, format='json')
+        self.assertEqual(response.status_code, status.HTTP_412_PRECONDITION_FAILED)
 
 
 class AuthenticationTest(APITestCase):
