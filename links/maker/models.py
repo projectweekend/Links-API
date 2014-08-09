@@ -57,6 +57,10 @@ class Maker(PermissionsMixin, AbstractBaseUser):
         self.identifier = new_email
         self.save()
 
+    def verify_email(self):
+        self.verified = True
+        self.save()
+
 
 class EmailVerificationToken(models.Model):
 
