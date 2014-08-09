@@ -13,6 +13,11 @@ class RegistrationRequestSerializer(serializers.Serializer):
     last_name = serializers.CharField(required=True)
 
 
+class EmailVerificationProcessSerializer(serializers.Serializer):
+
+    token = serializers.CharField(required=True)
+
+
 class AuthenticationResponseSerializer(serializers.Serializer):
 
     token = serializers.CharField()
