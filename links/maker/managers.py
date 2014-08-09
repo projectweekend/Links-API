@@ -36,7 +36,7 @@ class MakerManager(BaseUserManager):
 
 class PasswordResetTokenManager(Manager):
 
-    def create_and_send(self, user):
+    def create_and_queue(self, user):
         token = self.model(maker=user)
         token.save()
         #TODO: pass message to email queue here
@@ -44,7 +44,15 @@ class PasswordResetTokenManager(Manager):
 
 class EmailChangeTokenManager(Manager):
 
-    def create_and_send(self, user, new_email):
+    def create_and_queue(self, user, new_email):
         token = self.model(maker=user, new_email=new_email)
+        token.save()
+        #TODO: pass message to email queue here
+
+
+class EmailVerificationTokenManager(Manager):
+
+    def create_and_queue(self, user):
+        token = self.model(maker=user)
         token.save()
         #TODO: pass message to email queue here
