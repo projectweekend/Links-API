@@ -46,7 +46,7 @@ class RegsitrationView(generics.GenericAPIView):
             content = {'message': 'This email is in use'}
             return Response(content, status=status.HTTP_409_CONFLICT)
 
-        EmailVerificationToken.objects.create_and_queue(maker=user)
+        EmailVerificationToken.objects.create_and_queue(user)
         auth_token = Token.objects.create(user=user)
 
         response = AuthenticationResponseSerializer()
