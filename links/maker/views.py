@@ -8,7 +8,8 @@ from rest_framework.authtoken.models import Token
 
 from maker.models import (Maker,
                             PasswordResetToken,
-                            EmailChangeToken)
+                            EmailChangeToken,
+                            EmailVerificationToken)
 from maker.serializers import (RegistrationRequestSerializer,
                                 AuthenticationRequestSerializer,
                                 AuthenticationResponseSerializer,
@@ -44,10 +45,11 @@ class RegsitrationView(generics.GenericAPIView):
             content = {'message': 'This email is in use'}
             return Response(content, status=status.HTTP_409_CONFLICT)
 
-        token = Token.objects.create(user=user)
+        EmailVerificationToken(maker=user)
+        auth_token = Token.objects.create(user=user)
 
         response = AuthenticationResponseSerializer()
-        response.data['token'] = token.key
+        response.data['token'] = auth_token.key
 
         return Response(response.data, status=status.HTTP_201_CREATED)
 
