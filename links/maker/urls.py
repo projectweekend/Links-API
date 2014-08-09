@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, url
 
 from maker.views import (RegsitrationView,
+                            EmailVerificationProcessView,
                             AuthenticationView,
                             MakerSelfView,
                             MakerProfileListView,
@@ -53,6 +54,11 @@ urlpatterns = patterns(
         r'^email/update?$',
         EmailChangeProcessView.as_view(),
         name='email-change-process'
+    ),
+    url(
+        r'^email/verification/?$',
+        EmailVerificationProcessView.as_view(),
+        name='email-verification-process'
     ),
     url(
         r'^/?$',
