@@ -46,7 +46,7 @@ class RegsitrationView(generics.GenericAPIView):
             content = {'message': 'This email is in use'}
             return Response(content, status=status.HTTP_409_CONFLICT)
 
-        EmailVerificationToken.objects.create(maker=user)
+        EmailVerificationToken.objects.create_and_queue(maker=user)
         auth_token = Token.objects.create(user=user)
 
         response = AuthenticationResponseSerializer()
@@ -110,7 +110,7 @@ class ResetPasswordRequestView(PasswordReset, generics.GenericAPIView):
 
         user = self.find_user(request.DATA['email'])
         if user:
-            PasswordResetToken.objects.create_and_send(user)
+            PasswordResetToken.objects.create_and_queue(user)
 
         return Response(status=status.HTTP_201_CREATED)
 
@@ -151,7 +151,7 @@ class EmailChangeRequestView(AuthenticatedMaker, generics.GenericAPIView):
         try:
             Maker.objects.get(email=new_email)
         except Maker.DoesNotExist:
-            EmailChangeToken.objects.create_and_send(self.request.user, new_email)
+            EmailChangeToken.objects.create_and_queue(self.request.user, new_email)
             return Response(status=status.HTTP_201_CREATED)
         else:
             content = {'message': 'This email is in use'}

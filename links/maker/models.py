@@ -1,5 +1,4 @@
 import uuid
-from datetime import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
@@ -7,7 +6,8 @@ from django.utils import timezone
 
 from maker.managers import (MakerManager,
                             PasswordResetTokenManager,
-                            EmailChangeTokenManager)
+                            EmailChangeTokenManager,
+                            EmailVerificationTokenManager)
 
 
 def make_token():
@@ -67,6 +67,8 @@ class EmailVerificationToken(models.Model):
     maker = models.ForeignKey('Maker')
     token = models.CharField(max_length=50, default=make_token)
     date = models.DateTimeField(auto_now_add=True)
+
+    objects = EmailVerificationTokenManager()
 
     class Meta:
         verbose_name = 'Email Verification Token'
