@@ -41,6 +41,7 @@ DEFAULT_APPS = (
 THIRD_PARTY_APPS = (
     'south',
     'rest_framework',
+    'corsheaders',
     'django_filters',
 )
 
@@ -57,6 +58,7 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -123,3 +125,8 @@ REST_FRAMEWORK = {
 
     'PAGINATE_BY': 20,
 }
+
+
+CORS_ORIGIN_WHITELIST = (
+    '127.0.0.1:3001',
+)
