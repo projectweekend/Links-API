@@ -33,7 +33,7 @@ The development environment for this project is fully bootstrapped and portable 
 
 **Response:** None
 
-**Status Codes:
+**Status Codes:**
 * `201` - registration was successful
 * `400` - Invalid request body
 
@@ -51,7 +51,7 @@ The development environment for this project is fully bootstrapped and portable 
 
 **Response:** None
 
-**Status Codes:
+**Status Codes:**
 * `200` - verification was successful
 * `400` - Invalid request body
 
@@ -75,7 +75,7 @@ The development environment for this project is fully bootstrapped and portable 
 }
 ~~~
 
-**Status Codes:
+**Status Codes:**
 * `200` - authentication was successful
 * `400` - Invalid request body
 * `401` - Invalid identifier/password
