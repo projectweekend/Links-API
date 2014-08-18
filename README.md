@@ -135,3 +135,102 @@ The development environment for this project is fully bootstrapped and portable 
 * `201` - Request was created
 * `400` - Invalid request body
 * `409` - Email in use
+
+
+### Change password for user
+
+**POST:** `/v1/maker/email/update`
+
+**Body:**
+~~~json
+{
+    "token": "jal39aULJ3IRA90W3R0@appsd03"
+}
+~~~
+
+**Response:** None
+
+**Status Codes:**
+* `200` - Change was successful
+* `400` - Invalid request body
+* `412` - Invalid change token
+
+
+### Get logged in user detail
+
+**GET:** `/v1/maker/self`
+
+**Response:**
+~~~json
+{
+    "id": 3,
+    "identifier": "test@test.com",
+    "first_name": "Thomas",
+    "last_name": "Jefferson",
+    "email": "test@test.com",
+    "photo_url": "http://urlforphoto.com/image/something.jpg",
+    "bio": "This is my optional bio",
+    "joined": "2014-08-18T12:32:58.930Z"
+}
+~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
+
+
+### Get list of users
+
+**GET:** `/v1/maker`
+
+**Response:**
+~~~json
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    results: [
+        {
+            "id": 3,
+            "identifier": "test@test.com",
+            "first_name": "Thomas",
+            "last_name": "Jefferson",
+            "email": "test@test.com",
+            "photo_url": "http://urlforphoto.com/image/something.jpg",
+            "bio": "This is my optional bio",
+            "joined": "2014-08-18T12:32:58.930Z",
+            "folders": [],
+            "links": []
+        }
+    ]
+}
+~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
+
+
+### Get single user
+
+**GET:** `/v1/maker/:id`
+
+**Response:**
+~~~json
+{
+    "id": 3,
+    "identifier": "test@test.com",
+    "first_name": "Thomas",
+    "last_name": "Jefferson",
+    "email": "test@test.com",
+    "photo_url": "http://urlforphoto.com/image/something.jpg",
+    "bio": "This is my optional bio",
+    "joined": "2014-08-18T12:32:58.930Z",
+    "folders": [],
+    "links": []
+}
+~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
