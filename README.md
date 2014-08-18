@@ -14,3 +14,68 @@ The development environment for this project is fully bootstrapped and portable 
 * `fig run web python manage.py syncdb` - Run Django's `syncdb` command on a new database.
 * `fig run web python manage.py migtrate` - Apply South database migrations
 * `fig run web python manage.py test` - Run all project tests
+
+-------------------------------------------------------------------------------
+
+### Register a new user
+
+**POST:** `/v1/maker/register`
+
+**Body:**
+~~~json
+{
+    "email": "test@test.com",
+    "password": "adfadsf",
+    "first_name": "Thomas",
+    "last_name": "Jefferson"
+}
+~~~
+
+**Response:** None
+
+**Status Codes:
+* `201` - registration was successful
+* `400` - Invalid request body
+
+
+### Verify new user email address
+
+**POST:** `/v1/maker/email/verification`
+
+**Body:**
+~~~json
+{
+    "token": "asdjfkal48a09d853qlkjadfl93&%3l2k"
+}
+~~~
+
+**Response:** None
+
+**Status Codes:
+* `200` - verification was successful
+* `400` - Invalid request body
+
+
+### Authenticate user
+
+**POST:** `/v1/maker/authenticate`
+
+**Body:**
+~~~json
+{
+    "identifier": "test@tet.com",
+    "password": "adfadsf"
+}
+~~~
+
+**Response:**
+~~~json
+{
+    "token": "kja03984q0oaj34j*@$Fmjadfl"
+}
+~~~
+
+**Status Codes:
+* `200` - authentication was successful
+* `400` - Invalid request body
+* `401` - Invalid identifier/password
