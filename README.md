@@ -63,7 +63,7 @@ The development environment for this project is fully bootstrapped and portable 
 **Body:**
 ~~~json
 {
-    "identifier": "test@tet.com",
+    "identifier": "test@test.com",
     "password": "adfadsf"
 }
 ~~~
