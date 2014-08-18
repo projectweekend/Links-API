@@ -34,7 +34,7 @@ The development environment for this project is fully bootstrapped and portable 
 **Response:** None
 
 **Status Codes:**
-* `201` - registration was successful
+* `201` - Registration was created
 * `400` - Invalid request body
 
 
@@ -52,8 +52,45 @@ The development environment for this project is fully bootstrapped and portable 
 **Response:** None
 
 **Status Codes:**
-* `200` - verification was successful
+* `200` - Verification was successful
 * `400` - Invalid request body
+
+
+### Request password reset for user
+
+**POST:** `/v1/maker/password/reset`
+
+**Body:**
+~~~json
+{
+    "email": "test@test.com"
+}
+~~~
+
+**Response:** None
+
+**Status Codes:**
+* `201` - Reset request was created
+* `400` - Invalid request body
+
+
+### Reset password for user
+
+**POST:** `/v1/maker/password/reset/update`
+
+**Body:**
+~~~json
+{
+    "token": "alskdfj93lak4r&$@_23;lads",
+    "new_password": "newPassword",
+    "confirm_password": "newPassword"
+}
+~~~
+
+**Status Codes:**
+* `200` - Authentication was successful
+* `400` - Invalid request body
+* `412` - Invalid reset token
 
 
 ### Authenticate user
@@ -76,6 +113,25 @@ The development environment for this project is fully bootstrapped and portable 
 ~~~
 
 **Status Codes:**
-* `200` - authentication was successful
+* `200` - Authentication was successful
 * `400` - Invalid request body
 * `401` - Invalid identifier/password
+
+
+### Request email change for user
+
+**POST:** `/v1/maker/email`
+
+**Body:**
+~~~json
+{
+    "new_email": "something@different.com"
+}
+~~~
+
+**Response:** None
+
+**Status Codes:**
+* `201` - Request was created
+* `400` - Invalid request body
+* `409` - Email in use
