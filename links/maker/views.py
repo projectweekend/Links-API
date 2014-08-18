@@ -52,6 +52,8 @@ class RegsitrationView(generics.GenericAPIView):
         response = AuthenticationResponseSerializer()
         response.data['token'] = auth_token.key
 
+        # TODO: change this to return no data, just 201
+        # no auth token issued until after email verification
         return Response(response.data, status=status.HTTP_201_CREATED)
 
 
