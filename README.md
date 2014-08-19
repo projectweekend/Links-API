@@ -234,3 +234,96 @@ The development environment for this project is fully bootstrapped and portable 
 **Status Codes:**
 * `200` - Request was successful
 * `401` - Not logged in
+
+
+### Add a new folder
+
+**POST:** `/v1/folder`
+
+**Body:**
+~~~json
+{
+    "name": "Cool Links",
+    "Description": "Random links I thought were cool",
+    "is_public": true
+}
+~~~
+
+**Response:**
+~~~json
+{
+    "id": 1,
+    "name": "Cool Links",
+    "description": "Random links I thought were cool",
+    "is_public": true,
+    "created": "2014-08-19T00:05:51.611Z"
+}
+~~~
+
+**Status Codes:**
+* `201` - Folder was successful
+* `400` - Invalid request body
+* `401` - Not logged in
+
+
+### Get list of folders for logged in user
+
+**GET:** `/v1/folder`
+
+**Response:**
+~~~json
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "name": "Cool Links",
+            "description": "Random links I thought were cool",
+            "links": [
+                {
+                    "id": 2,
+                    "folder": 1,
+                    "url": "https://learn.adafruit.com/flora-and-codebender",
+                    "note": "Using Codebender with Flora",
+                    "photo_url": "",
+                    "created": "2014-08-04T00:00:26.284Z"
+                }
+            ],
+            "is_public": true,
+            "created": "2014-08-03T23:23:43.117Z"
+        }
+    ]
+}
+~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
+
+
+### Get single folder for logged in user
+
+**GET:** `/v1/folder/:id`
+
+**Response:**
+~~~json
+{
+    "id": 1,
+    "name": "Cool Links",
+    "description": "Random links I thought were cool",
+    "links": [
+        {
+            "id": 2,
+            "folder": 1,
+            "url": "https://learn.adafruit.com/flora-and-codebender",
+            "note": "Using Codebender with Flora",
+            "photo_url": "",
+            "created": "2014-08-04T00:00:26.284Z"
+        }
+    ],
+    "is_public": true,
+    "created": "2014-08-03T23:23:43.117Z"
+}
+~~~
