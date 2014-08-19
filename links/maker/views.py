@@ -47,14 +47,9 @@ class RegsitrationView(generics.GenericAPIView):
             return Response(content, status=status.HTTP_409_CONFLICT)
 
         EmailVerificationToken.objects.create_and_queue(user)
-        auth_token = Token.objects.create(user=user)
+        Token.objects.create(user=user)
 
-        response = AuthenticationResponseSerializer()
-        response.data['token'] = auth_token.key
-
-        # TODO: change this to return no data, just 201
-        # no auth token issued until after email verification
-        return Response(response.data, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
 
 
 class EmailVerificationProcessView(generics.GenericAPIView):
