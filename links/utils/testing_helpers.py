@@ -14,11 +14,15 @@ class AuthenticatedAPITestCase(APITestCase):
 
     def setUp(self):
         super(AuthenticatedAPITestCase, self).setUp()
-        response = self.client.post(reverse('registration'), {
+        self.client.post(reverse('registration'), {
             'email': 'test@test.com',
             'password': 'something secret',
             'first_name': 'Testy',
             'last_name': 'McTesterson'
+        }, format='json')
+        response = self.client.post(reverse('authentication'), {
+            'identifier': 'test@test.com',
+            'password': 'something secret'
         }, format='json')
         token = response.data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)

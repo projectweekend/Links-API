@@ -14,11 +14,15 @@ class ReportedIssuesTest(APITestCase):
         super(ReportedIssuesTest, self).setUp()
 
         # Create a user
-        response = self.client.post(reverse('registration'), {
+        self.client.post(reverse('registration'), {
             'email': '123@abc.com',
             'password': '123456',
             'first_name': 'Other',
             'last_name': 'User'
+        }, format='json')
+        response = self.client.post(reverse('authentication'), {
+            'identifier': '123@abc.com',
+            'password': '123456'
         }, format='json')
         token = response.data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
@@ -35,11 +39,15 @@ class ReportedIssuesTest(APITestCase):
         self.link_id = response.data['id']
 
         # Create my the user we want to make requests with and login in
-        response = self.client.post(reverse('registration'), {
+        self.client.post(reverse('registration'), {
             'email': 'test@test.com',
             'password': 'something secret',
             'first_name': 'Testy',
             'last_name': 'McTesterson'
+        }, format='json')
+        response = self.client.post(reverse('authentication'), {
+            'identifier': 'test@test.com',
+            'password': 'something secret',
         }, format='json')
         token = response.data['token']
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token)
