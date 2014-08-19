@@ -189,7 +189,7 @@ The development environment for this project is fully bootstrapped and portable 
     "count": 1,
     "next": null,
     "previous": null,
-    results: [
+    "results": [
         {
             "id": 3,
             "identifier": "test@test.com",
