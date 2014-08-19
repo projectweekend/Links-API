@@ -236,7 +236,7 @@ The development environment for this project is fully bootstrapped and portable 
 * `401` - Not logged in
 
 
-### Add a new folder
+### Add a folder
 
 **POST:** `/v1/folder`
 
@@ -261,9 +261,10 @@ The development environment for this project is fully bootstrapped and portable 
 ~~~
 
 **Status Codes:**
-* `201` - Folder was successful
+* `201` - Folder was created
 * `400` - Invalid request body
 * `401` - Not logged in
+* `409` - Duplicate folder name
 
 
 ### Get list of folders for logged in user
@@ -327,3 +328,89 @@ The development environment for this project is fully bootstrapped and portable 
     "created": "2014-08-03T23:23:43.117Z"
 }
 ~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
+* `404` - Folder does not exist
+
+
+### Add a link
+
+**POST:** `/v1/link`
+
+**Body:**
+~~~json
+{
+    "url":"https://learn.adafruit.com/flora-and-codebender",
+    "note":"Using Codebender with Flora",
+    "folder":1
+}
+~~~
+
+**Response:**
+~~~json
+{
+    "id": 3,
+    "folder": 1,
+    "url": "https://learn.adafruit.com/flora-and-codebender",
+    "note": "Using Codebender with Flora",
+    "photo_url": "",
+    "created": "2014-08-19T00:43:18.064Z"
+}
+~~~
+
+**Status Codes:**
+* `201` - Link was created
+* `400` - Invalid request body
+* `401` - Not logged in
+
+
+### Get list of links for logged in user
+
+**GET:** `/v1/link`
+
+**Response:**
+~~~json
+{
+    "count": 1,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 3,
+            "folder": null,
+            "url": "https://learn.adafruit.com/flora-and-codebender",
+            "note": "Using Codebender with Flora",
+            "photo_url": "",
+            "created": "2014-08-19T00:43:18.064Z"
+        }
+    ]
+}
+~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
+
+
+### Get single links for logged in user
+
+**GET:** `/v1/link/:id`
+
+**Response:**
+~~~json
+{
+    "id": 3,
+    "folder": null,
+    "url": "https://learn.adafruit.com/flora-and-codebender",
+    "note": "Using Codebender with Flora",
+    "photo_url": "",
+    "created": "2014-08-19T00:43:18.064Z"
+}
+~~~
+
+**Status Codes:**
+* `200` - Request was successful
+* `401` - Not logged in
+* `404` - Link does not exist
